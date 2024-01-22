@@ -3,9 +3,10 @@ public:
     vector<int> findErrorNums(vector<int>& nums) {
         int n=nums.size();
         vector<int>res;
-        sort(nums.begin(),nums.end());
-        for(int i=0;i<n-1;i++){
-            if(nums[i]==nums[i+1]){
+        map<int,int>mp;
+        for(int i=0;i<n;i++){
+            mp[nums[i]]++;
+            if(mp[nums[i]]==2){
                 res.push_back(nums[i]);
                 break;
             }
