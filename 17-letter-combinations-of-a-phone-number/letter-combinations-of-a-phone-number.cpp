@@ -1,38 +1,28 @@
 class Solution {
 public:
-    string get_string(char c){
-        if(c=='2')
-            return "abc";
-        else if(c=='3')
-            return "def";
-        else if(c=='4')
-            return "ghi";
-        else if(c=='5')
-            return "jkl";
-        else if(c=='6')
-            return "mno";
-        else if(c=='7')
-            return "pqrs";
-        else if(c=='8')
-            return "tuv";
-        else
-            return "wxyz";
+    unordered_map<char,string>mpp;
+    vector<string>res;
+    void solve(string digits,int start,int end,string st){
+        if(start>=end){
+            res.push_back(st);
+            return;
+        }
+        for(int i=0;i<mpp[digits[start]].size();i++){
+            solve(digits,start+1,end,st+mpp[digits[start]][i]);
+        }
     }
     vector<string> letterCombinations(string digits) {
+        mpp['2']="abc";
+        mpp['3']="def";
+        mpp['4']="ghi";
+        mpp['5']="jkl";
+        mpp['6']="mno";
+        mpp['7']="pqrs";
+        mpp['8']="tuv";
+        mpp['9']="wxyz";
         if(digits.size()==0)
-            return {};
-        vector<string>arr={""};
-        vector<string>res;
-        for(int i=0;i<digits.size();i++){
-            string s=get_string(digits[i]);
-            for(int j=0;j<arr.size();j++){
-                for(int k=0;k<s.size();k++){
-                    res.push_back(arr[j]+s[k]);
-                }
-            }
-            arr=res;
-            res={};
-        }
-        return arr;
+            return res;
+        solve(digits,0,digits.size(),"");
+    return res;
     }
 };
