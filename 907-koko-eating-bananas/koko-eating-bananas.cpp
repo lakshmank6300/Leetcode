@@ -1,24 +1,23 @@
 class Solution {
 public:
-    bool check(long long mid,vector<int>& piles,int h){
-        long long sm=0;
+    bool predicate(int mid , vector<int>&piles,int h){
+        long long res=0;
         for(int i=0;i<piles.size();i++){
-            double pil=piles[i];
-            sm+=ceil(pil/mid);
+            res+=piles[i]/mid;
+            if(piles[i]%mid!=0)    res++;
         }
-        return sm>h;
+        return res<=h;
     }
     int minEatingSpeed(vector<int>& piles, int h) {
-        long long sm=0;
-        for(int i=0;i<piles.size();i++)
-            sm+=piles[i];
-        long long low=1,high=sm;
+        long long low=1,high=accumulate(piles.begin(),piles.end(),0LL);
         while(low<=high){
-            long long mid=(low+high)/2;
-            if(check(mid,piles,h))
-                low=mid+1;
-            else
+            long long mid=(low+high)>>1;
+            if(predicate(mid,piles,h)){
                 high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
         }
         return low;
     }
