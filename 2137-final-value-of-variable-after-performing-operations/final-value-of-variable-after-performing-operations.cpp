@@ -1,17 +1,11 @@
 class Solution {
 public:
     int finalValueAfterOperations(vector<string>& operations) {
-        int x=0;
-        for(int i=0;i<operations.size();i++){
-            if(operations[i]=="--X")
-                --x;
-            else if(operations[i]=="++X")
-                ++x;
-            else if(operations[i]=="X++")
-                x++;
-            else
-                x--;
+        int res = 0;
+        for(int i = 0; i < operations.size(); i++){
+            if(operations[i][2] == '-' || operations[i][0] == '-') res--;
+            else res++;
         }
-        return x;
+        return res;
     }
 };
