@@ -1,31 +1,23 @@
 class Solution {
 public:
-    bool solve(vector<vector<int>>&visited,vector<vector<char>>&board,string &word,int cnt,int n,int m,int i,int j){
-        if(cnt==word.size())
-            return true;
-        if(i>=n || j>=m || i<0 || j<0 || visited[i][j]==1)
-            return false;
-        if(visited[i][j]==0 && board[i][j]==word[cnt]){
-            visited[i][j]=1;
-            int a=solve(visited,board,word,cnt+1,n,m,i,j-1);
-            int b=solve(visited,board,word,cnt+1,n,m,i,j+1);
-            int c=solve(visited,board,word,cnt+1,n,m,i+1,j);
-            int d= solve(visited,board,word,cnt+1,n,m,i-1,j);
-            visited[i][j]=0;
-            return a|| b || c || d;
-        }
-        return false;
+    bool check(vector<vector<char>>& board,string& word,int i,int j,int p,vector<vector<bool>>&visited){
+        if(p == word.size()) return true;
+        if(i < 0 || j < 0 || i >= board.size() || j >= board[0].size() || p >= word.size() || board[i][j] != word[p] || visited[i][j]) return false;
+        visited[i][j] = true;
+        bool a = check(board,word,i+1,j,p+1,visited);
+        bool b = check(board,word,i,j+1,p+1,visited);
+        bool c = check(board,word,i-1,j,p+1,visited);
+        bool d = check(board,word,i,j-1,p+1,visited);
+        visited[i][j] = false;
+        return a || b || c || d;
     }
     bool exist(vector<vector<char>>& board, string word) {
-        int n=board.size(),m=board[0].size();
-        vector<vector<int>>visited(n,vector<int>(m,0));
-        int cnt=0;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(board[i][j]==word[0]){
-                    if(solve(visited,board,word,cnt,n,m,i,j))
-                        return true;
-                }
+        int n = board.size(), m = board[0].size();
+        vector<vector<bool>> visited(n,vector<bool>(m,false));
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < m; j++){
+                if(board[i][j] == word[0])
+                    if(check(board,word,i,j,0,visited)) return true;
             }
         }
         return false;
